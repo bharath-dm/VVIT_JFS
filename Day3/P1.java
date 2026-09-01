@@ -52,6 +52,7 @@ public class P1 {
         System.out.println("\n--- 4. Handling 'throw' and 'throws' ---");
         try {
             validateAge(15);
+            
         } catch (IllegalArgumentException e) {
             System.out.println("Caught validation error: " + e.getMessage());
         }
