@@ -1,46 +1,56 @@
-import java.util.Comparator;
-import java.util.TreeSet;
+class UserProfile {
+    // 1. private: Hidden completely from outside; accessible only via getters/setters
+    private String socialSecurityPin;
+
+    // 2. default (no keyword): Accessible by any class in the same package
+    String username;
+
+    // 3. protected: Accessible in same package and by derived/sub classes
+    protected String membershipType;
+
+    // 4. public: Accessible everywhere
+    public String country;
+
+    // Constructor
+    public UserProfile(String username, String pin, String membershipType) {
+        this.username = username;
+        this.socialSecurityPin = pin;
+        this.membershipType = membershipType;
+        this.country = "India";
+    }
+
+    // Getter for private field
+    public String getMaskedPin() {
+        return "***" + this.socialSecurityPin.substring(this.socialSecurityPin.length() - 2);
+    }
+
+    // Setter for private field with input validation
+    public void updatePin(String newPin) {
+        if (newPin != null && newPin.length() == 4) {
+            this.socialSecurityPin = newPin;
+            System.out.println("PIN updated successfully.");
+        } else {
+            System.out.println("Invalid PIN format. Must be 4 digits.");
+        }
+    }
+}
 
 public class P6 {
     public static void main(String[] args) {
-        // --- 1. Natural Ascending Sorting ---
-        System.out.println("--- 1. Natural Sorted TreeSet ---");
-        TreeSet<Integer> numbers = new TreeSet<>();
+        UserProfile user = new UserProfile("alex_dev", "4589", "Premium");
 
-        numbers.add(50);
-        numbers.add(10);
-        numbers.add(40);
-        numbers.add(20);
-        numbers.add(30);
-        // numbers.add(null); // Throws NullPointerException (TreeSet requires comparable elements)
+        // Public, Protected, and Default fields are directly readable in the same package
+        System.out.println("Username (default): " + user.username);
+        System.out.println("Membership (protected): " + user.membershipType);
+        System.out.println("Country (public): " + user.country);
 
-        System.out.println("Sorted Elements (Ascending): " + numbers);
+        // Direct access: user.socialSecurityPin would trigger a COMPILE ERROR
+        // Read private data safely through public getter:
+        System.out.println("PIN (private via getter): " + user.getMaskedPin());
 
-        // --- 2. NavigableSet Boundary Operations ---
-        System.out.println("\n--- 2. Navigable Boundary Lookups ---");
-        System.out.println("First (Lowest): " + numbers.first());
-        System.out.println("Last (Highest): " + numbers.last());
-
-        // higher(x) -> strictly greater (> x); lower(x) -> strictly smaller (< x)
-        System.out.println("Strictly Higher than 30: " + numbers.higher(30));
-        System.out.println("Strictly Lower than 30: " + numbers.lower(30));
-
-        // ceiling(x) -> (>= x); floor(x) -> (<= x)
-        System.out.println("Ceiling of 25 (>= 25): " + numbers.ceiling(25));
-        System.out.println("Floor of 25 (<= 25): " + numbers.floor(25));
-
-        // Subsets (fromInclusive, toExclusive)
-        System.out.println("Subset between [20, 50): " + numbers.subSet(20, 50));
-
-        // --- 3. Custom Comparator Sorting (Descending Order) ---
-        System.out.println("\n--- 3. Custom Comparator (Descending) ---");
-        TreeSet<String> fruitsDescending = new TreeSet<>(Comparator.reverseOrder());
-
-        fruitsDescending.add("Apple");
-        fruitsDescending.add("Mango");
-        fruitsDescending.add("Banana");
-        fruitsDescending.add("Cherry");
-
-        System.out.println("Descending Order Set: " + fruitsDescending);
+        // Update private data safely through public setter:
+        user.updatePin("12");   // Fails validation
+        user.updatePin("9876"); // Succeeds validation
+        System.out.println("Updated PIN: " + user.getMaskedPin());
     }
 }
