@@ -8,7 +8,7 @@ public class P1 {
     // Standard JDBC Connection parameters
     private static final String DB_URL = "jdbc:mysql://localhost:3306/Tech_DB";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_PASSWORD = "Bharath@123"; // Updated password for secure accessS
 
     public static void main(String[] args) {
         // --- 1. Driver Registration ---
